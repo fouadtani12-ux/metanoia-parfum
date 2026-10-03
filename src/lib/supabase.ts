@@ -163,7 +163,7 @@ export function embedNotesInDescription(
     fragranceFamily: meta.fragranceFamily || 'Oriental',
     subtitle: meta.subtitle || '',
   };
-  return `${clean}\n\n<!-- METANOIA_DATA:${JSON.stringify(payload)} -->`;
+  return clean ? `${clean}\n\n<!-- METANOIA_DATA:${JSON.stringify(payload)} -->` : `<!-- METANOIA_DATA:${JSON.stringify(payload)} -->`;
 }
 
 /**
@@ -588,35 +588,13 @@ export async function saveProductToSupabase(product: Product): Promise<void> {
 
   // Graceful retry if Supabase table is missing optional columns
   if (error) {
-    const errorMsg = error.message || '';
+    console.warn('[Supabase] Initial save notice:', error.message, '- Retrying with baseline schema...');
     const optionalColumns = ['top_notes', 'heart_notes', 'base_notes', 'fragrance_family', 'subtitle', 'volume', 'compare_at_price', 'original_price', 'discount'];
-    let modified = false;
     for (const col of optionalColumns) {
-      if (errorMsg.includes(col)) {
-        delete payload[col];
-        modified = true;
-      }
+      delete payload[col];
     }
-    if (modified) {
-      const retry = await client.from('products').upsert(payload, { onConflict: 'id' });
-      error = retry.error;
-    }
-    if (error && error.message) {
-      // Final fallback to baseline schema
-      const baselinePayload: Record<string, any> = {
-        id: product.id,
-        name: product.name,
-        brand: product.brand || 'METANOÏA',
-        price: numPrice,
-        description: enrichedDescription,
-        image_url: imageUrl,
-        stock: Number(product.stock) || 0,
-        category: resolvedCategory,
-        created_at: product.createdAt || new Date().toISOString(),
-      };
-      const fallbackRetry = await client.from('products').upsert(baselinePayload, { onConflict: 'id' });
-      error = fallbackRetry.error;
-    }
+    const retry = await client.from('products').upsert(payload, { onConflict: 'id' });
+    error = retry.error;
   }
 
   if (error) {
@@ -692,19 +670,13 @@ export async function updateProductInSupabase(id: string, updates: Partial<Produ
   let { error } = await client.from('products').update(payload).eq('id', id);
 
   if (error) {
-    const errorMsg = error.message || '';
+    console.warn('[Supabase] Initial update notice:', error.message, '- Retrying with baseline schema...');
     const optionalColumns = ['top_notes', 'heart_notes', 'base_notes', 'fragrance_family', 'subtitle', 'volume', 'compare_at_price', 'original_price', 'discount'];
-    let modified = false;
     for (const col of optionalColumns) {
-      if (errorMsg.includes(col)) {
-        delete payload[col];
-        modified = true;
-      }
+      delete payload[col];
     }
-    if (modified) {
-      const retry = await client.from('products').update(payload).eq('id', id);
-      error = retry.error;
-    }
+    const retry = await client.from('products').update(payload).eq('id', id);
+    error = retry.error;
   }
 
   if (error) {

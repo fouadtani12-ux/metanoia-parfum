@@ -1497,16 +1497,24 @@ export const StoreProvider: React.FC<{ children: React.ReactNode }> = ({ childre
   };
 
   const updateProduct = async (id: string, updates: Partial<Product>): Promise<void> => {
+    let mergedProduct: Product | undefined;
+
     setProducts((prev) =>
-      prev.map((p) =>
-        p.id === id ? { ...p, ...updates, updatedAt: new Date().toISOString() } : p
-      )
+      prev.map((p) => {
+        if (p.id === id) {
+          mergedProduct = { ...p, ...updates, updatedAt: new Date().toISOString() };
+          return mergedProduct;
+        }
+        return p;
+      })
     );
+
+    const payloadToSend = mergedProduct || updates;
 
     // Persist to Supabase
     if (isSupabaseConfigured()) {
       try {
-        await updateProductInSupabase(id, updates);
+        await updateProductInSupabase(id, payloadToSend);
         showToast('Parfum mis à jour sur Supabase !', 'success');
       } catch (err: any) {
         console.error('[Supabase] Update error:', err);
@@ -1518,7 +1526,7 @@ export const StoreProvider: React.FC<{ children: React.ReactNode }> = ({ childre
     fetch(`/api/products/${id}`, {
       method: 'PUT',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(updates),
+      body: JSON.stringify(payloadToSend),
     }).catch((err) => console.warn('[Sync] Failed to update product on API:', err));
   };
 

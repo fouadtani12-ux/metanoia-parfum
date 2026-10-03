@@ -153,7 +153,9 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, onNavigate })
 
           {/* Subtitle / Olfactive Notes Preview */}
           <p className="text-xs text-[#A7A3A0]/80 line-clamp-1 mt-0.5 italic">
-            {(product.topNotes || []).slice(0, 2).join(', ')}{product.heartNotes && product.heartNotes[0] ? ` & ${product.heartNotes[0]}` : ''}
+            {(product.topNotes && product.topNotes.length > 0)
+              ? `${product.topNotes.slice(0, 2).join(', ')}${product.heartNotes && product.heartNotes[0] ? ` & ${product.heartNotes[0]}` : ''}`
+              : (product.subtitle || 'Extrait de Parfum Intense')}
           </p>
         </div>
 
