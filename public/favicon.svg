@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" fill="none">
+  <rect width="100" height="100" rx="20" fill="#0B0B0D"/>
+  <circle cx="50" cy="50" r="42" stroke="#D8B08C" stroke-width="2" stroke-dasharray="4 2"/>
+  <!-- Bottle cap -->
+  <rect x="42" y="22" width="16" height="12" rx="2" fill="#D8B08C"/>
+  <rect x="46" y="34" width="8" height="4" fill="#C9A46C"/>
+  <!-- Bottle body -->
+  <path d="M30 42C30 38.5 32.5 36 36 36H64C67.5 36 70 38.5 70 42V72C70 76 66.5 78 62 78H38C33.5 78 30 76 30 72V42Z" fill="#151518" stroke="#D8B08C" stroke-width="2"/>
+  <!-- Metanoia 'M' emblem -->
+  <path d="M42 66V50L50 59L58 50V66" stroke="#D8B08C" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>

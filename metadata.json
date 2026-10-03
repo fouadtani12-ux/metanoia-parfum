@@ -1,0 +1,8 @@
+{
+  "name": "Remix METANOÏA PARFUMS | Haute Parfumerie \u0026 Boutique En Ligne",
+  "description": "Plateforme e-commerce haut de gamme pour METANOÏA PARFUMS. Fragrances exclusives, notes olfactives précieuses, commande sécurisée et espace administrateur complet.",
+  "requestFramePermissions": [],
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}

@@ -1,0 +1,44 @@
+{
+  "entities": {
+    "Product": {
+      "title": "Product",
+      "description": "Metanoïa Parfums luxury fragrance catalog item",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "name": { "type": "string" },
+        "slug": { "type": "string" },
+        "subtitle": { "type": "string" },
+        "description": { "type": "string" },
+        "brand": { "type": "string" },
+        "category": { "type": "string" },
+        "gender": { "type": "string" },
+        "price": { "type": "number" },
+        "compareAtPrice": { "type": "number" },
+        "discount": { "type": "number" },
+        "stock": { "type": "number" },
+        "sku": { "type": "string" },
+        "barcode": { "type": "string" },
+        "volume": { "type": "string" },
+        "fragranceFamily": { "type": "string" },
+        "accentColor": { "type": "string" },
+        "gradientStyle": { "type": "string" },
+        "isActive": { "type": "boolean" },
+        "isFeatured": { "type": "boolean" },
+        "isBestSeller": { "type": "boolean" },
+        "isNew": { "type": "boolean" },
+        "rating": { "type": "number" },
+        "reviewCount": { "type": "number" },
+        "createdAt": { "type": "string" },
+        "updatedAt": { "type": "string" }
+      },
+      "required": ["id", "name", "price", "stock", "isActive"]
+    }
+  },
+  "firestore": {
+    "/products/{productId}": {
+      "schema": "Product",
+      "description": "Collection of all perfumes in the boutique catalog"
+    }
+  }
+}
